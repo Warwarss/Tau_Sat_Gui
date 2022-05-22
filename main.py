@@ -1,8 +1,8 @@
-from PyQt5 import QtWidgets
+from PyQt5 import QtWidgets,QtGui,QtCore,Qt
 from PyQt5.QtWidgets import QApplication, QMainWindow
+from PyQt5.QtCore import QTimer
 import sys
 import serial
-import time
 
 class Window(QMainWindow):
     def __init__(self):
@@ -10,44 +10,68 @@ class Window(QMainWindow):
         self.setGeometry(100, 100, 1600, 900)
         self.setWindowTitle("TAU-SAT Yer İstasyonu")
         self.initUI()
+        self.timer_status=QTimer(self)
+        self.timer_status.timeout.connect(lambda: self.Update())
+        self.timer_status.start(1000)
+
     def initUI(self):
         self.Serial_Port=QtWidgets.QLabel(self)
         self.Serial_Port.setGeometry(300,300,300,300)
 
-        self.Baslat = QtWidgets.QPushButton(self)
-        self.Baslat.setGeometry(100, 50, 100, 50)
-        self.Baslat.setText("Başlat")
+        self.gridLayoutWidget = QtWidgets.QWidget(self)
+        self.gridLayoutWidget.setGeometry(QtCore.QRect(20, 20, 221, 151))
+        self.gridLayoutWidget.setObjectName("gridLayoutWidget")
 
-        self.Ayril = QtWidgets.QPushButton(self)
-        self.Ayril.setGeometry(100, 100, 100, 50)
-        self.Ayril.setText("Ayrıl")
+        self.gridLayout = QtWidgets.QGridLayout(self.gridLayoutWidget)
+        self.gridLayout.setContentsMargins(0, 0, 0, 0)
+        self.gridLayout.setObjectName("gridLayout")
 
-        self.Motor_Ac = QtWidgets.QPushButton(self)
-        self.Motor_Ac.setGeometry(100, 150, 100, 50)
-        self.Motor_Ac.setText("Motorları Aç")
+        self.pushButton = QtWidgets.QPushButton(self.gridLayoutWidget)
+        self.pushButton.setObjectName("pushButton")
+        self.gridLayout.addWidget(self.pushButton, 0, 1, 1, 1)
 
-        self.Motor_Kapa = QtWidgets.QPushButton(self)
-        self.Motor_Kapa.setGeometry(100, 200, 100, 50)
-        self.Motor_Kapa.setText("Motorları Kapat")
+        self.pushButton_2 = QtWidgets.QPushButton(self.gridLayoutWidget)
+        self.pushButton_2.setObjectName("pushButton_2")
+        self.gridLayout.addWidget(self.pushButton_2, 0, 0, 1, 1)
 
-        self.Video_Sec = QtWidgets.QPushButton(self)
-        self.Video_Sec.setGeometry(250, 50, 100, 50)
-        self.Video_Sec.setText("Video Seç")
+        self.pushButton_3 = QtWidgets.QPushButton(self.gridLayoutWidget)
+        self.pushButton_3.setObjectName("pushButton_3")
+        self.gridLayout.addWidget(self.pushButton_3, 2, 0, 1, 1)
 
-        self.Video_Gonder = QtWidgets.QPushButton(self)
-        self.Video_Gonder.setGeometry(250, 100, 100, 50)
-        self.Video_Gonder.setText("Video Gönder")
+        self.pushButton_4 = QtWidgets.QPushButton(self.gridLayoutWidget)
+        self.pushButton_4.setObjectName("pushButton_4")
+        self.gridLayout.addWidget(self.pushButton_4, 2, 1, 1, 1)
 
-        self.Kalibrasyon = QtWidgets.QPushButton(self)
-        self.Kalibrasyon.setGeometry(250, 150, 100, 50)
-        self.Kalibrasyon.setText("Kalibrasyon")
+        self.pushButton_5 = QtWidgets.QPushButton(self.gridLayoutWidget)
+        self.pushButton_5.setObjectName("pushButton_5")
+        self.gridLayout.addWidget(self.pushButton_5, 1, 0, 1, 1)
 
-        self.Asenkron_Video = QtWidgets.QPushButton(self)
-        self.Asenkron_Video.setGeometry(250, 200, 100, 50)
-        self.Asenkron_Video.setText("Asenkron Video")
+        self.pushButton_6 = QtWidgets.QPushButton(self.gridLayoutWidget)
+        self.pushButton_6.setObjectName("pushButton_6")
+        self.gridLayout.addWidget(self.pushButton_6, 1, 1, 1, 1)
 
+        self.pushButton_7 = QtWidgets.QPushButton(self.gridLayoutWidget)
+        self.pushButton_7.setObjectName("pushButton_7")
+        self.gridLayout.addWidget(self.pushButton_7, 3, 0, 1, 1)
+
+        self.pushButton_8 = QtWidgets.QPushButton(self.gridLayoutWidget)
+        self.pushButton_8.setObjectName("pushButton_8")
+        self.gridLayout.addWidget(self.pushButton_8, 3, 1, 1, 1)
+
+        self.pushButton.setText("Başlat")
+        self.pushButton_2.setText("Ayrıl")
+        self.pushButton_3.setText("Motorları Aç")
+        self.pushButton_4.setText("Motorları Kapat")
+        self.pushButton_5.setText("Video Seç")
+        self.pushButton_6.setText("Video Gönder")
+        self.pushButton_7.setText("Kalibrasyon")
+        self.pushButton_8.setText("Asenkron Video")
+
+
+        
     def Update(self):
-        self.Serial_Port.setText("Sicaklik Degeri "+str(ser.read_until(size=5)))
+        pass
+        # self.Serial_Port.setText("Sicaklik Degeri "+str(ser.read_until(size=5)))
 
 def window():
     app= QApplication(sys.argv)
@@ -56,5 +80,5 @@ def window():
     win.Update()
     sys.exit(app.exec_())
 
-ser = serial.Serial("COM5","9600")
+# ser = serial.Serial("COM5","9600")
 window()
